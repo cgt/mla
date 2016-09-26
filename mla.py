@@ -59,7 +59,16 @@ def main():
         process_line(line)
 
 
+def not_caught_by_spamhaus(log_data):
+    """
+    Returns a dict like log_data but with IPs that were found in
+    zen.spamhaus.org removed.
+    """
+    return {ip: lists for ip, lists in log_data.items() if "zen.spamhaus.org" not in lists}
+
+
 def dnsbl_hit_count(log_data):
+    """Counts how many hosts were found in each dnsbl."""
     import collections
     import operator
 
@@ -73,4 +82,5 @@ if __name__ == "__main__":
     main()
 
     from pprint import pprint
-    pprint(dnsbl_hit_count(log_data))
+    # pprint(dnsbl_hit_count(log_data))
+    pprint(not_caught_by_spamhaus(log_data))
