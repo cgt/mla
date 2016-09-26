@@ -49,7 +49,6 @@ def process_ps(line, log_data):
 def process_dnsblog(line, log_data):
     match = re_dnsblog.search(line)
     if not match:
-        print("Weird dnsblog line: {}".format(line))
         return
 
     ip = match.group(1)
