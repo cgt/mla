@@ -66,7 +66,7 @@ def not_caught_by_spamhaus(log_data):
     Returns a dict like log_data but with IPs that were found in
     zen.spamhaus.org removed.
     """
-    return {ip: lists for ip, lists in log_data.items() if "zen.spamhaus.org" not in lists}
+    return {ip: lists for ip, lists in log_data.items() if "zen.spamhaus.org" not in lists and len(lists) >= 1}
 
 
 def dnsbl_hit_count(log_data):
