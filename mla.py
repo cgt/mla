@@ -11,8 +11,8 @@
 # <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 import argparse
+import json
 import operator
-from pprint import pprint
 import re
 import sys
 
@@ -87,6 +87,13 @@ analyzers = {
 }
 
 
+class SetEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, set):
+            return sorted(list(obj))
+        return json.JSONEncoder.default(self, obj)
+
+
 def main(args):
     log_data = {}
     for line in args.file:
@@ -94,7 +101,8 @@ def main(args):
 
     try:
         analyzer = analyzers[args.analyzer]
-        pprint(analyzer(log_data))
+        x = analyzer(log_data)
+        print(json.dumps(x, sort_keys=True, indent=4, cls=SetEncoder))
     except KeyError:
         print('Invalid analyzer "{}". Valid: {}'.format(
             args.analyzer, sorted(analyzers.keys())))
